@@ -10,6 +10,7 @@ import pandas
 # - fix concert pitch
 # - fix octave index
 
+
 CP = 443  # TODO: fix concert pitch
 C0 = 2 ** (-(9 + 4*12) / 12)
 SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
@@ -73,6 +74,25 @@ def sync(fileroot='data', filepattern='*.mp3'):
     return files
 
 
+def philharmonia():
+
+    zip = True
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+    file = os.path.join(root, 'data' + ('.json.zip' if zip else '.json'))
+
+    if zip:
+
+        with gzip.open(file, 'rt', encoding='ascii') as file:
+
+            data = pandas.read_json(file)
+
+    else:
+
+        data = pandas.read_json(file)
+
+    return data
+
+
 @click.command('data', help='Browse the Philharmonia Orchestra sound samples.', no_args_is_help=False, context_settings=dict(help_option_names=['-h', '--help']))
 @click.option('-u', '--update', is_flag=True, default=False, help='Sync sound sample database.')
 @click.option('-c', '--columns', is_flag=True, default=False, help='List available table columns.')
@@ -83,11 +103,12 @@ def sync(fileroot='data', filepattern='*.mp3'):
 def main(update, columns, sort, filter, output, query):
 
     zip = True
-    file = os.path.join('data', 'data' + ('.json.zip' if zip else '.json'))
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+    file = os.path.join(root, 'data' + ('.json.zip' if zip else '.json'))
 
     if update:
 
-        data = sync('data')
+        data = sync(root)
 
         print(f'updating {file}')
 
