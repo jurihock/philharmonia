@@ -67,6 +67,7 @@ def sync(fileroot='data', filepattern='*.mp3'):
     query = os.path.join(fileroot, '**', filepattern)
 
     files = glob.glob(query, recursive=True)
+    files = [os.path.relpath(file, fileroot) for file in files]
     files = [decode(file) for file in files]
 
     print(f'found {len(files)} {filepattern} files in {fileroot} directory')
@@ -74,11 +75,15 @@ def sync(fileroot='data', filepattern='*.mp3'):
     return files
 
 
-def philharmonia():
+def root():
+
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+
+
+def records():
 
     zip = True
-    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
-    file = os.path.join(root, 'data' + ('.json.zip' if zip else '.json'))
+    file = os.path.join(root(), 'data' + ('.json.zip' if zip else '.json'))
 
     if zip:
 
@@ -103,12 +108,11 @@ def philharmonia():
 def main(update, columns, sort, filter, output, query):
 
     zip = True
-    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
-    file = os.path.join(root, 'data' + ('.json.zip' if zip else '.json'))
+    file = os.path.join(root(), 'data' + ('.json.zip' if zip else '.json'))
 
     if update:
 
-        data = sync(root)
+        data = sync(root())
 
         print(f'updating {file}')
 
