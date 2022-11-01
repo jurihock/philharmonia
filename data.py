@@ -1,5 +1,6 @@
 import click
 import glob
+import gzip
 import json
 import os
 import pandas
@@ -81,7 +82,8 @@ def sync(fileroot='data', filepattern='*.mp3'):
 @click.argument('query', nargs=-1)
 def main(update, columns, sort, filter, output, query):
 
-    file = os.path.join('data', 'data.json')
+    zip = True
+    file = os.path.join('data', 'data' + ('.json.zip' if zip else '.json'))
 
     if update:
 
@@ -89,13 +91,29 @@ def main(update, columns, sort, filter, output, query):
 
         print(f'updating {file}')
 
-        with open(file, 'w', encoding='utf-8') as file:
+        if zip:
 
-            json.dump(data, file, indent=2, ensure_ascii=False)
+            with gzip.open(file, 'wt', encoding='ascii') as file:
+
+                json.dump(data, file, ensure_ascii=True)
+
+        else:
+
+            with open(file, 'w', encoding='ascii') as file:
+
+                json.dump(data, file, indent=2, ensure_ascii=True)
 
         return
 
-    data = pandas.read_json(file)
+    if zip:
+
+        with gzip.open(file, 'rt', encoding='ascii') as file:
+
+            data = pandas.read_json(file)
+
+    else:
+
+        data = pandas.read_json(file)
 
     if columns:
 
