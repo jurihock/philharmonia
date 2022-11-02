@@ -13,4 +13,4 @@ e.g. `unzip all-samples.zip && cd all-samples && unzip '*.zip'`
 
 ## 3) Update database file *data.json.zip*
 
-e.g. `python3 data.py -u`
+e.g. `python3 philharmonia.py -u`

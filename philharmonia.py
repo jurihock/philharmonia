@@ -26,7 +26,7 @@ def frequency(note, octave, precision=2):
 
 def decode(file):
 
-    name, ext = os.path.splitext(os.path.basename(file))
+    name = os.path.splitext(os.path.basename(file))[0]
     attrs = name.split('_')
     assert len(attrs) == 5
 
@@ -75,15 +75,15 @@ def sync(fileroot='data', filepattern='*.mp3'):
     return files
 
 
-def root():
+def dataroot():
 
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 
-def records():
+def dataset():
 
     zip = True
-    file = os.path.join(root(), 'data' + ('.json.zip' if zip else '.json'))
+    file = os.path.join(dataroot(), 'data' + ('.json.zip' if zip else '.json'))
 
     if zip:
 
@@ -98,7 +98,7 @@ def records():
     return data
 
 
-@click.command('data', help='Browse the Philharmonia Orchestra sound samples.', no_args_is_help=False, context_settings=dict(help_option_names=['-h', '--help']))
+@click.command('philharmonia', help='Browse the Philharmonia Orchestra sound samples.', no_args_is_help=False, context_settings=dict(help_option_names=['-h', '--help']))
 @click.option('-u', '--update', is_flag=True, default=False, help='Sync sound sample database.')
 @click.option('-c', '--columns', is_flag=True, default=False, help='List available table columns.')
 @click.option('-s', '--sort', multiple=True, help='Column names to sort by.')
@@ -108,11 +108,11 @@ def records():
 def main(update, columns, sort, filter, output, query):
 
     zip = True
-    file = os.path.join(root(), 'data' + ('.json.zip' if zip else '.json'))
+    file = os.path.join(dataroot(), 'data' + ('.json.zip' if zip else '.json'))
 
     if update:
 
-        data = sync(root())
+        data = sync(dataroot())
 
         print(f'updating {file}')
 
