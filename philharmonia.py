@@ -78,9 +78,14 @@ def dataroot():
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 
+def datafile(filename):
+
+    return os.path.join(dataroot(), filename)
+
+
 def dataframe():
 
-    file = os.path.join(dataroot(), 'data.csv')
+    file = datafile('data.csv')
     data = pandas.read_csv(file)
 
     return data
@@ -95,7 +100,7 @@ def dataframe():
 @click.argument('query', nargs=-1)
 def main(update, columns, sort, filter, output, query):
 
-    file = os.path.join(dataroot(), 'data.csv')
+    file = datafile('data.csv')
 
     if update:
 
