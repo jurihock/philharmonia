@@ -84,7 +84,7 @@ def datafile(filename):
 def dataframe():
 
     file = datafile('data.csv')
-    data = pandas.read_csv(file)
+    data = pandas.read_csv(file, index_col=[0])
 
     return data
 
@@ -110,7 +110,7 @@ def main(update, columns, sort, filter, output, query):
 
         return
 
-    data = pandas.read_csv(file)
+    data = pandas.read_csv(file, index_col=[0])
 
     if columns:
 
