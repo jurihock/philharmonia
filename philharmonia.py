@@ -78,7 +78,7 @@ def dataroot():
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
 
 
-def dataset():
+def dataframe():
 
     file = os.path.join(dataroot(), 'data.csv')
     data = pandas.read_csv(file)
