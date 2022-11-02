@@ -17,7 +17,10 @@ def frequency(note, octave, precision=2):
     return round(2 ** (semitone / 12 + octave) * c0, precision)
 
 
-def decode(file):
+def decode(file, fileroot):
+
+    bytes = os.path.getsize(file)
+    file = os.path.relpath(file, fileroot)
 
     name = os.path.splitext(os.path.basename(file))[0]
     attrs = name.split('_')
@@ -42,6 +45,7 @@ def decode(file):
         pitch = frequency(note, octave)
 
     file = dict(file=file,
+                bytes=bytes,
                 name=name,
                 instrument=instrument,
                 percussion=percussion,
@@ -60,8 +64,7 @@ def sync(fileroot='data', filepattern='*.mp3'):
     query = os.path.join(fileroot, '**', filepattern)
 
     files = glob.glob(query, recursive=True)
-    files = [os.path.relpath(file, fileroot) for file in files]
-    files = [decode(file) for file in files]
+    files = [decode(file, fileroot) for file in files]
 
     print(f'found {len(files)} {filepattern} files in {fileroot} directory')
 
