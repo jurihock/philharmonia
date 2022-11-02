@@ -19,7 +19,7 @@ def frequency(note, octave, precision=2):
 
 def decode(file, fileroot):
 
-    bytes = os.path.getsize(file)
+    size = os.path.getsize(file)
     file = os.path.relpath(file, fileroot)
 
     name = os.path.splitext(os.path.basename(file))[0]
@@ -45,8 +45,8 @@ def decode(file, fileroot):
         pitch = frequency(note, octave)
 
     file = dict(file=file,
-                bytes=bytes,
-                name=name,
+                filename=name,
+                filesize=size,
                 instrument=instrument,
                 percussion=percussion,
                 note=note,
