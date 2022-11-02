@@ -1,7 +1,5 @@
 import click
 import glob
-import gzip
-import json
 import os
 import pandas
 
@@ -82,18 +80,8 @@ def dataroot():
 
 def dataset():
 
-    zip = True
-    file = os.path.join(dataroot(), 'data' + ('.json.zip' if zip else '.json'))
-
-    if zip:
-
-        with gzip.open(file, 'rt', encoding='ascii') as file:
-
-            data = pandas.read_json(file)
-
-    else:
-
-        data = pandas.read_json(file)
+    file = os.path.join(dataroot(), 'data.csv')
+    data = pandas.read_csv(file)
 
     return data
 
@@ -107,38 +95,19 @@ def dataset():
 @click.argument('query', nargs=-1)
 def main(update, columns, sort, filter, output, query):
 
-    zip = True
-    file = os.path.join(dataroot(), 'data' + ('.json.zip' if zip else '.json'))
+    file = os.path.join(dataroot(), 'data.csv')
 
     if update:
 
+        print(f'indexing sound samples')
         data = sync(dataroot())
 
         print(f'updating {file}')
-
-        if zip:
-
-            with gzip.open(file, 'wt', encoding='ascii') as file:
-
-                json.dump(data, file, ensure_ascii=True)
-
-        else:
-
-            with open(file, 'w', encoding='ascii') as file:
-
-                json.dump(data, file, indent=2, ensure_ascii=True)
+        pandas.DataFrame.from_dict(data).to_csv(file)
 
         return
 
-    if zip:
-
-        with gzip.open(file, 'rt', encoding='ascii') as file:
-
-            data = pandas.read_json(file)
-
-    else:
-
-        data = pandas.read_json(file)
+    data = pandas.read_csv(file)
 
     if columns:
 
