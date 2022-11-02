@@ -4,12 +4,7 @@ import os
 import pandas
 
 
-# TODO:
-# - fix concert pitch
-# - fix octave index
-
-
-CP = 443  # TODO: fix concert pitch
+CP = 440
 C0 = 2 ** (-(9 + 4*12) / 12)
 SCALE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B']
 
@@ -43,7 +38,7 @@ def decode(file):
         pitch = None
     else:
         note = note[:-1] + '#' if note.endswith('s') else note
-        octave = int(octave) - 1  # TODO: fix octave index
+        octave = int(octave)
         pitch = frequency(note, octave)
 
     file = dict(file=file,
