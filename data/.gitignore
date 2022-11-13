@@ -1,4 +1,4 @@
-*.mp3
-*.zip
-
-!data.json.zip
+# /brass/
+/percussion/
+/strings/
+/woodwind/
