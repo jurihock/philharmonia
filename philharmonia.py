@@ -17,46 +17,42 @@ def frequency(note, octave, precision=2):
     return round(2 ** (semitone / 12 + octave) * c0, precision)
 
 
-def decode(file, fileroot):
+def decode(filepath, fileroot):
 
-    size = os.path.getsize(file)
-    file = os.path.relpath(file, fileroot)
+    size = os.path.getsize(filepath)
+    file = os.path.relpath(filepath, fileroot)
 
     name = os.path.splitext(os.path.basename(file))[0]
     attrs = name.split('_')
     assert len(attrs) == 5
 
-    instrument = attrs[0]
+    family, instrument = os.path.split(os.path.split(file)[0])
     note = attrs[1][:-1]
     octave = attrs[1][-1:]
     length = attrs[2]
     dynamic = attrs[3]
     style = attrs[4]
 
-    percussion = not (note and octave)
-
-    if percussion:
-        note = None
-        octave = None
-        pitch = None
-    else:
+    if note and octave:
         note = note[:-1] + '#' if note.endswith('s') else note
         octave = int(octave)
         pitch = frequency(note, octave)
+    else:
+        note = None
+        octave = None
+        pitch = None
 
-    file = dict(file=file,
+    return dict(file=file,
                 filename=name,
                 filesize=size,
+                family=family,
                 instrument=instrument,
-                percussion=percussion,
                 note=note,
                 octave=octave,
                 pitch=pitch,
                 length=length,
                 dynamic=dynamic,
                 style=style)
-
-    return file
 
 
 def sync(fileroot='data', filepattern='*.mp3'):
