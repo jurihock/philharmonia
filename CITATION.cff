@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+title: "jurihock/philharmonia"
+authors:
+  - family-names: "Hock"
+    given-names: "Juergen"
+url: "https://github.com/jurihock/philharmonia"
+type: software
+message: >-
+  If you use this software, please cite it
+  using the metadata from this file.
+references:
+  - title: "Philharmonia Orchestra Sound Samples"
+    authors:
+      - affiliation: "Philharmonia Orchestra"
+    url: "https://philharmonia.co.uk/resources/sound-samples"
+    type: dataset
+    message: >-
+      If you use this dataset, please cite it
+      using the metadata from this file.
